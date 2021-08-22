@@ -3,6 +3,10 @@ import pygame
 pygame.init()
 words = ['дом', 'кошка', 'мышь', 'питон', 'кот', 'кыш']
 
+pygame.font.init() # you have to call this at the start,
+                   # if you want to use this module.
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
 
 def prepareList(ls: list):
     ls.insert(0, ['*'] * (len(test[0]) + 2))
@@ -12,7 +16,6 @@ def prepareList(ls: list):
         ls[i].append('*')
     ls[-1].append('*')
 
-
 test = [
     ['д', 'к', 'о', 'ш', 'м'],
     ['о', 'м', 'ы', 'к', 'ы'],
@@ -20,8 +23,15 @@ test = [
     ['к', 'о', 'т', 'б', 'ь'],
     ['п', 'и', 'т', 'о', 'н'],
 ]
-Height = ((len(test)) + len(words)) * 26
-Width = 26 * len(test[0])
+Height = (((len(test)) + len(words)) * 36)
+Width = (100 * len(test[0]))
+screen = pygame.display.set_mode((Width, Height))
+pygame.display.set_caption("Crossword")
+clock = pygame.time.Clock()
+FPS = 30 # частота кадров в секунду
+WHITE = pygame.color.Color('white')
+RED = pygame.color.Color('red')
+
 
 prepareList(test)
 
@@ -84,6 +94,35 @@ def way_search(word: str):
 
     return ind_ans
 
+all_way = []
 for word in words:
-    print(word, way_search(word))
+    way = way_search(word)
+    way1 = deepcopy(way)
+    all_way.append(way1)
     ind_ans.clear()
+
+print(all_way)
+running = True
+while running:
+    # Держим цикл на правильной скорости
+    clock.tick(FPS)
+    # Ввод процесса (события)
+    for event in pygame.event.get():
+        # check for closing window
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Обновление
+    # Рендеринг
+    screen.fill(WHITE)
+    for line in range(len(test)):
+        for letter in range(len(test[line])):
+            bukva = myfont.render(test[line][letter], False, (0, 0, 0))
+            screen.blit(bukva, (letter*30 , line*30))
+    for word in all_way:
+        for coord in range(len(word)-1):
+            pygame.draw.line(screen, RED, (word[coord][1]*30+5, word[coord][0]*30+10), (word[coord+1][1]*30+5, word[coord+1][0]*30+10))
+    # После отрисовки всего, переворачиваем экран
+    pygame.display.flip()
+
+pygame.quit()
