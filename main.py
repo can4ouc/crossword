@@ -1,7 +1,7 @@
 import pygame
 
 pygame.init()
-words = ['дом', 'кошка', 'мышь', 'питон', 'кот']
+words = ['дом', 'кошка', 'мышь', 'питон', 'кот', 'кыш']
 
 
 def prepareList(ls: list):
