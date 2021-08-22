@@ -1,3 +1,4 @@
+import time
 from copy import deepcopy
 
 import pygame
@@ -124,6 +125,8 @@ while running:
     for word in all_way:
         for coord in range(len(word)-1):
             pygame.draw.line(screen, RED, (word[coord][1]*30+5, word[coord][0]*30+10), (word[coord+1][1]*30+5, word[coord+1][0]*30+10))
+            pygame.display.flip()
+            time.sleep(0.1)
     # После отрисовки всего, переворачиваем экран
     pygame.display.flip()
 
