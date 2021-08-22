@@ -7,9 +7,10 @@ words = ['дом', 'кошка', 'мышь', 'питон', 'кот']
 def prepareList(ls: list):
     ls.insert(0, ['*'] * (len(test[0]) + 2))
     ls.append(['*'] * (len(test[1]) + 1))
-    for i in range(1, len(test) - 1):
+    for i in range(1, len(test)-1):
         ls[i].insert(0, '*')
         ls[i].append('*')
+    ls[-1].append('*')
 
 
 test = [
