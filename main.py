@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import pygame
 
 pygame.init()
@@ -69,7 +71,7 @@ def search(letter, line_index=None, bukva_index=None):
         elif letter == test[line_index - 1][bukva_index - 1]:
             return line_index - 1, bukva_index - 1
         else:
-            return 'бебе'
+            return None
 
 
 wrong = []
@@ -85,7 +87,7 @@ def way_search(word: str):
             ind_ans.append(a)
         else:
             a = search(word[letter], a[0], a[1])
-            if a == 'бебе':
+            if a == None:
                 wrong.append(ind_ans[0])
                 ind_ans.clear()
                 return way_search(word)
