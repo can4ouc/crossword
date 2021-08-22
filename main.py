@@ -1,23 +1,28 @@
 import time
 from copy import deepcopy
-
 import pygame
 
 pygame.init()
-words = ['дом', 'кошка', 'мышь', 'питон', 'кот', 'кыш']
+words = []
+with open("word_rus.txt",'r') as file_handler:
+    for line in file_handler:
+        words.append(line.strip('\n'))
 
-pygame.font.init() # you have to call this at the start,
-                   # if you want to use this module.
+print(words)
+
+pygame.font.init()  # you have to call this at the start,
+# if you want to use this module.
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
 def prepareList(ls: list):
     ls.insert(0, ['*'] * (len(test[0]) + 2))
     ls.append(['*'] * (len(test[1]) + 1))
-    for i in range(1, len(test)-1):
+    for i in range(1, len(test) - 1):
         ls[i].insert(0, '*')
         ls[i].append('*')
     ls[-1].append('*')
+
 
 test = [
     ['д', 'к', 'о', 'ш', 'м'],
@@ -31,10 +36,9 @@ Width = (100 * len(test[0]))
 screen = pygame.display.set_mode((Width, Height))
 pygame.display.set_caption("Crossword")
 clock = pygame.time.Clock()
-FPS = 30 # частота кадров в секунду
+FPS = 30  # частота кадров в секунду
 WHITE = pygame.color.Color('white')
 RED = pygame.color.Color('red')
-
 
 prepareList(test)
 
@@ -97,11 +101,15 @@ def way_search(word: str):
 
     return ind_ans
 
+
 all_way = []
 for word in words:
-    way = way_search(word)
-    way1 = deepcopy(way)
-    all_way.append(way1)
+    try:
+        way = way_search(word)
+        way1 = deepcopy(way)
+        all_way.append(way1)
+    except:
+        pass
     ind_ans.clear()
 
 print(all_way)
@@ -121,10 +129,11 @@ while running:
     for line in range(len(test)):
         for letter in range(len(test[line])):
             bukva = myfont.render(test[line][letter], False, (0, 0, 0))
-            screen.blit(bukva, (letter*30 , line*30))
+            screen.blit(bukva, (letter * 30, line * 30))
     for word in all_way:
-        for coord in range(len(word)-1):
-            pygame.draw.line(screen, RED, (word[coord][1]*30+5, word[coord][0]*30+10), (word[coord+1][1]*30+5, word[coord+1][0]*30+10))
+        for coord in range(len(word) - 1):
+            pygame.draw.line(screen, RED, (word[coord][1] * 30 + 5, word[coord][0] * 30 + 10),
+                             (word[coord + 1][1] * 30 + 5, word[coord + 1][0] * 30 + 10))
             pygame.display.flip()
             time.sleep(0.1)
     # После отрисовки всего, переворачиваем экран
